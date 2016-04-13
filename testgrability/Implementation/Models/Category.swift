@@ -7,15 +7,11 @@
 //
 
 import Foundation
-import RealmSwift
+import CoreData
 
-class Category : Object {
+class Category : NSManagedObject {
     
-    dynamic var categoryId: String?
-    dynamic var name: String?
-    
-    override static func primaryKey() -> String? {
-        return "categoryId"
-    }
+    @NSManaged var categoryId: String?
+    @NSManaged var name: String?
 
 }

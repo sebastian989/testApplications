@@ -7,22 +7,18 @@
 //
 
 import Foundation
-import RealmSwift
+import CoreData
 
-class Application : Object {
+class Application : NSManagedObject {
     
-    dynamic var applicationId: String?
-    dynamic var name: String?
-    dynamic var summary: String?
-    dynamic var price: String?
-    dynamic var currency: String?
-    dynamic var rights: String?
-    dynamic var category: String?
-    dynamic var smallImage: String?
-    dynamic var mediumImage: String?
-    dynamic var largeImage: String?
-    
-    override static func primaryKey() -> String? {
-        return "applicationId"
-    }
+    @NSManaged var applicationId: String?
+    @NSManaged var name: String?
+    @NSManaged var summary: String?
+    @NSManaged var price: String?
+    @NSManaged var currency: String?
+    @NSManaged var rights: String?
+    @NSManaged var category: String?
+    @NSManaged var smallImage: String?
+    @NSManaged var mediumImage: String?
+    @NSManaged var largeImage: String?
 }

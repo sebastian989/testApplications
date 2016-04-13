@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10171" systemVersion="15A279b" minimumToolsVersion="Xcode 7.0">
+    <entity name="Application" representedClassName="testgrability.Application" syncable="YES">
+        <attribute name="applicationId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="currency" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="largeImage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mediumImage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="price" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="rights" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="smallImage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="summary" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Category" representedClassName="testgrability.Category" syncable="YES">
+        <attribute name="categoryId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Category" positionX="-63" positionY="-18" width="128" height="75"/>
+        <element name="Application" positionX="-54" positionY="9" width="128" height="195"/>
+    </elements>
+</model>
