@@ -36,20 +36,6 @@ class CategoriesRepository {
     }
     
     
-    static func getObjectByCustomId(id: String) -> NSManagedObject? {
-        let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
-        let request = NSFetchRequest(entityName: "Category")
-        request.predicate = NSPredicate(format: "categoryId == '\(id)'")
-        var result: [AnyObject]?
-        do {
-            result = try managedObjectContext.executeFetchRequest(request)
-        } catch _ {
-            result = nil
-        }
-        return result!.first as? NSManagedObject
-    }
-    
-    
     static func updateOrCreateCategory(entry: [String : AnyObject], managedObjectContext: NSManagedObjectContext) {
         let categoryId = ((entry["category"] as! [String : AnyObject])["attributes"] as? [String : AnyObject])!["im:id"] as? String
         
@@ -86,9 +72,24 @@ class CategoriesRepository {
     }
     
     
+    static func getObjectByCustomId(id: String) -> NSManagedObject? {
+        let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+        let request = NSFetchRequest(entityName: "Category")
+        request.predicate = NSPredicate(format: "categoryId == '\(id)'")
+        var result: [AnyObject]?
+        do {
+            result = try managedObjectContext.executeFetchRequest(request)
+        } catch _ {
+            result = nil
+        }
+        return result!.first as? NSManagedObject
+    }
+    
+    
     static func loadLocalData() -> [Category] {
         let fetchRequest = NSFetchRequest(entityName: "Category")
         let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+        managedObjectContext.deletedObjects
         
         do {
             let results = try managedObjectContext.executeFetchRequest(fetchRequest) as! [Category]
