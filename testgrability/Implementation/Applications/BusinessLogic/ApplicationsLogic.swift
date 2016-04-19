@@ -11,6 +11,7 @@ import Foundation
 class ApplicationsLogic {
     
     var applicationsPresenterListener: ApplicationsPresenterListener!
+    var applications = [Application]()
     
     init(applicationsPresenterListener: ApplicationsPresenterListener!) {
         self.applicationsPresenterListener = applicationsPresenterListener
@@ -21,6 +22,14 @@ class ApplicationsLogic {
     }
     
     func handleApplicationsFromDB(applications: [Application]) {
-        self.applicationsPresenterListener.displayApplications(applications)
+        self.applications = applications
+        self.sortApplications()
+        self.applicationsPresenterListener.displayApplications(self.applications)
+    }
+    
+    private func sortApplications() {
+        self.applications.sortInPlace { (applicationA, applicationB) -> Bool in
+            return applicationA.name < applicationB.name
+        }
     }
 }

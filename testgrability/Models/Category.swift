@@ -13,5 +13,6 @@ class Category : NSManagedObject {
     
     @NSManaged var categoryId: String?
     @NSManaged var name: String?
+    @NSManaged var quantity: NSNumber?
 
 }

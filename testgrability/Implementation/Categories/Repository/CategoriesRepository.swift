@@ -39,7 +39,7 @@ class CategoriesRepository {
     static func updateOrCreateCategory(entry: [String : AnyObject], managedObjectContext: NSManagedObjectContext) {
         let categoryId = ((entry["category"] as! [String : AnyObject])["attributes"] as? [String : AnyObject])!["im:id"] as? String
         
-        var category: Category? = getObjectByCustomId(categoryId!) as? Category
+        var category: Category? = getObjectByField("categoryId", equalValue: categoryId!, entity: "Category") as? Category
         
         if category == nil {
             category = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: managedObjectContext) as? Category
@@ -47,13 +47,14 @@ class CategoriesRepository {
         
         category!.categoryId = categoryId!
         category!.name = ((entry["category"] as! [String : AnyObject])["attributes"] as? [String : AnyObject])!["label"] as? String
+        category!.quantity = NSNumber(int: (category!.quantity == nil ? 1 :category!.quantity?.intValue)! + 1)
     }
     
     
     static func updateOrCreateApplication(entry: [String : AnyObject], managedObjectContext: NSManagedObjectContext) {
         let applicationId = ((entry["id"] as! [String : AnyObject])["attributes"] as? [String : AnyObject])!["im:id"] as? String
         
-        var application: Application? = getObjectByCustomId(applicationId!) as? Application
+        var application: Application? = getObjectByField("applicationId", equalValue: applicationId!, entity: "Application") as? Application
         
         if application == nil {
             application = NSEntityDescription.insertNewObjectForEntityForName("Application", inManagedObjectContext: managedObjectContext) as? Application
@@ -72,10 +73,10 @@ class CategoriesRepository {
     }
     
     
-    static func getObjectByCustomId(id: String) -> NSManagedObject? {
+    static func getObjectByField(field: String, equalValue: String, entity: String) -> NSManagedObject? {
         let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
-        let request = NSFetchRequest(entityName: "Category")
-        request.predicate = NSPredicate(format: "categoryId == '\(id)'")
+        let request = NSFetchRequest(entityName: entity)
+        request.predicate = NSPredicate(format: "\(field) == '\(equalValue)'")
         var result: [AnyObject]?
         do {
             result = try managedObjectContext.executeFetchRequest(request)
@@ -89,13 +90,28 @@ class CategoriesRepository {
     static func loadLocalData() -> [Category] {
         let fetchRequest = NSFetchRequest(entityName: "Category")
         let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
-        managedObjectContext.deletedObjects
         
         do {
             let results = try managedObjectContext.executeFetchRequest(fetchRequest) as! [Category]
             return results
         } catch {
             return []
+        }
+    }
+    
+    static func removeAllDBObjects(entities: [String]) {
+        let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+        
+        for entity in entities {
+            let request = NSFetchRequest(entityName: entity)
+            do {
+                let results = try managedObjectContext.executeFetchRequest(request) as! [NSManagedObject]
+                for object in results
+                {
+                    managedObjectContext.deleteObject(object)
+                }
+            } catch {
+            }
         }
     }
     

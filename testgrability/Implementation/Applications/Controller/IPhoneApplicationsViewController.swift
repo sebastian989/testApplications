@@ -19,6 +19,7 @@ class IPhoneApplicationsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.navigationItem.title = self.category
         self.applicationPresenter = ApplicationsPresenter(applicationViewListener: self)
         self.applicationPresenter.loadApplications(self.category)
     }
@@ -43,7 +44,22 @@ extension IPhoneApplicationsViewController: UITableViewDelegate, UITableViewData
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let applicationCell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! CustomTableViewCell
         
-        applicationCell.applicationNameLabel.text = self.applicationsList[indexPath.row].category
+        let selectedApplication = self.applicationsList[indexPath.row]
+        
+        applicationCell.applicationNameLabel.text = selectedApplication.name!
+        applicationCell.rightsLabel.text = selectedApplication.rights!
+        let priceText = "\(selectedApplication.price!) \(selectedApplication.currency)"
+        applicationCell.priceLabel.text = Float(selectedApplication.price!) > 0 ? priceText : "Free"
+        let url = NSURL(string: selectedApplication.mediumImage!)
+        
+        applicationCell.applicationImageView.sd_setImageWithURL(url, placeholderImage: UIImage(named: "Placeholder")) { (image: UIImage!, error: NSError!, cacheType: SDImageCacheType, url: NSURL!) in
+            
+            let sprintAnimation = POPSpringAnimation(propertyNamed: kPOPViewScaleXY)
+            sprintAnimation.toValue = NSValue(CGPoint: CGPointMake(0.9, 0.9))
+            sprintAnimation.velocity = NSValue(CGPoint: CGPointMake(2, 2))
+            sprintAnimation.springBounciness = 20;
+            applicationCell.applicationImageView.pop_addAnimation(sprintAnimation, forKey: "springAnimation")
+        }
         
         return applicationCell
     }

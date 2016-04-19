@@ -23,9 +23,16 @@ class CategoriesLogic {
         self.loadSavedCategories()
     }
     
-    func loadSavedCategories() {
+    private func loadSavedCategories() {
         self.categories = CategoriesRepository.loadLocalData()
+        self.sortCategories()
         self.categoryPresenterListener.displayCategories(self.categories)
+    }
+    
+    private func sortCategories() {
+        self.categories.sortInPlace { (categoryA, categoryB) -> Bool in
+            return categoryA.name < categoryB.name
+        }
     }
     
     
@@ -44,6 +51,7 @@ class CategoriesLogic {
             let remoteDataLastUpdate = (updatedField as! [String : String])["label"]
             if self.getLastSyncDate() != remoteDataLastUpdate {
                 let entries = (json["feed"] as! [String : AnyObject])["entry"] as! [[String : AnyObject]]
+                CategoriesRepository.removeAllDBObjects(["Application", "Category"])
                 CategoriesRepository.saveCategoriesAndAppsFromEntries(entries)
                 self.saveLastSyncDate(remoteDataLastUpdate!)
                 self.loadSavedCategories()

@@ -11,4 +11,7 @@ import UIKit
 class CustomCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var applicationNameLabel: UILabel!
+    @IBOutlet weak var applicationRightsLabel: UILabel!
+    @IBOutlet weak var applicationPriceLabel: UILabel!
+    @IBOutlet weak var applicationImageView: UIImageView!
 }
